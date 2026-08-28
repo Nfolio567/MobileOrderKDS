@@ -9,7 +9,7 @@ Websocket::Websocket(QObject *parent) :
     &m_websocket,
     &QWebSocket::connected,
     this,
-    [this]() {
+    [this]() -> void {
       emit Websocket::connected();
     }
   );
@@ -18,7 +18,7 @@ Websocket::Websocket(QObject *parent) :
     &m_websocket,
     &QWebSocket::textMessageReceived,
     this,
-    [this]() {
+    [this]() -> void {
       emit Websocket::textMessage();
     }
   );
@@ -27,7 +27,7 @@ Websocket::Websocket(QObject *parent) :
     &m_websocket,
     &QWebSocket::disconnected,
     this,
-    [this]() {
+    [this]() -> void {
       emit Websocket::disconnected();
     }
   );

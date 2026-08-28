@@ -17,7 +17,7 @@ void HttpClient::connect2Server() {
     reply,
     &QNetworkReply::finished,
     this,
-    [this, reply]()
+    [this, reply]() -> void
     {
       if (reply->error())
       {

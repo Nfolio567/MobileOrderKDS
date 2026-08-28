@@ -1,3 +1,5 @@
 build/
 .qmlls.ini
 .cache/
+.env
+resources/setting.ini

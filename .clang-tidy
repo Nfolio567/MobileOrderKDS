@@ -6,5 +6,5 @@ Checks: >
   modernize-*,
   clang-analyzer-*
 
-WarnigAsErrors: ''
+WarningsAsErrors: ''
 FormatStyle: file

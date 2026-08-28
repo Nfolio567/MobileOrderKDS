@@ -1,3 +1,6 @@
+#pragma once
+
+#include "src/service/network/KdsConfig.hpp"
 #include <QObject>
 #include <QUrl>
 #include <QWebSocket>
@@ -15,6 +18,6 @@ class Websocket : public QObject {
     void disconnected();
 
   private:
-    const QUrl KDS_WEBSOCKET_ENDPOINT = QUrl("wss://sobile.nfolio.one/kds-ws");
+    const QUrl KDS_WEBSOCKET_ENDPOINT = QUrl(KdsConfig::websocketEndpoint);
     QWebSocket m_websocket;
 };
