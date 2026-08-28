@@ -1,0 +1,25 @@
+name: Build
+on: push
+jobs:
+  cmake_build_ninja:
+    name: "Build by CMake with Ninja"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Install packages
+        run: sudo apt update && sudo apt install build-essential cmake ninja-build qt6-base-dev qt6-declarative-dev qt6-websockets-dev
+      - name: Export build files
+        run: cmake -B build -G Ninja
+      - name: Check metatype.json
+        run: |
+          if [ ! -s "build/meta_types/qt6kds_metatypes.json" ]; then
+            echo "{}" > build/meta_types/qt6kds_metatypes.json
+          fi
+      - name: Build
+        run: cmake --build build
+      - name: Upload runnable file to artifact
+        uses: actions/upload-artifact@v7
+        with: 
+          name: KDS
+          path: build/kds
