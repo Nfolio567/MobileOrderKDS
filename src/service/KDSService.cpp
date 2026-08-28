@@ -2,6 +2,6 @@
 
 #include <QObject>
 
-KDSService::KDSService(QObject *parent):
+KdsService::KdsService(QObject *parent):
   QObject(parent)
 {}

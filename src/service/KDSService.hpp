@@ -6,12 +6,12 @@
 #include "network/HttpClient.hpp"
 #include "network/Websocket.hpp"
 
-class KDSService : public QObject {
+class KdsService : public QObject {
   Q_OBJECT
   QML_ELEMENT
 
   public:
-    explicit KDSService(QObject *parent = nullptr);
+    explicit KdsService(QObject *parent = nullptr);
 
   private:
     HttpClient m_client;
