@@ -10,7 +10,7 @@ find_package(Qt6 6.4 COMPONENTS
   Quick
   Qml
   Network
-  Websockets
+  WebSockets
   REQUIRED
 )
 
