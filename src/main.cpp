@@ -1,4 +1,5 @@
-#include "src/service/network/KdsConfig.hpp"
+#include "service/network/KdsConfig.hpp"
+
 #include <QNetworkAccessManager>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QSettings>
+#include <QString>
 
 class KdsConfig {  
   public:
