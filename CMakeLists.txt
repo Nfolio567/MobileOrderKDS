@@ -15,7 +15,10 @@ find_package(Qt6 6.4 COMPONENTS
 )
 
 set(KDS_QML_FILES 
-  ${PROJECT_SOURCE_DIR}/src/qml/kds.qml
+  ${PROJECT_SOURCE_DIR}/src/qml/App.qml
+  ${PROJECT_SOURCE_DIR}/src/qml/Screen01.qml
+  ${PROJECT_SOURCE_DIR}/src/qml/OrderBox.qml
+  ${PROJECT_SOURCE_DIR}/src/qml/Constants.qml
 )
 
 qt_standard_project_setup(REQUIRES 6.11.1)
@@ -33,4 +36,11 @@ target_link_libraries(kds PRIVATE
 
 add_subdirectory(
   ${PROJECT_SOURCE_DIR}/src
+)
+
+qt_add_qml_module(kds
+  URI KDS
+  VERSION 0.1
+
+  QML_FILES ${KDS_QML_FILES}
 )
