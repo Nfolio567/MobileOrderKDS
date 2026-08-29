@@ -12,7 +12,7 @@ jobs:
       - name: Install Qt6.11.2
         run: curl -OL https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-x64-online.run
       - name: Export build files
-        run: cmake -B build -G Ninja
+        run: cmake -B build -G Ninja -DCMAKE_PREFIX_PATH="$HOME/Qt/6.11.2/gcc_64"
       - name: Check metatype.json
         run: |
           if [ ! -s "build/meta_types/qt6kds_metatypes.json" ]; then
