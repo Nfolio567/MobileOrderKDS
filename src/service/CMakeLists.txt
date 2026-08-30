@@ -1,6 +1,6 @@
 target_sources(kds PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/KdsService.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/KdsService.hpp
+  ./KdsService.cpp
+  ./KdsService.hpp
 )
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/network)
+add_subdirectory(./network)
