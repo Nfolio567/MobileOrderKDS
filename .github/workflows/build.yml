@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Export build files
-        run: cmake -B build -G Ninja -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/qt-venv/6.11.2/gcc_64"
+        run: cmake -B build -G Ninja -DQt6_DIR="$GITHUB_WORKSPACE/qt-venv/6.11.2/gcc_64/lib/cmake/Qt6"
       - name: Check metatype.json
         run: |
           if [ ! -s "build/meta_types/qt6kds_metatypes.json" ]; then
