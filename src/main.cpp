@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
   QQmlApplicationEngine engine;
-  engine.loadFromModule("KDS", "App");
+  engine.loadFromModule("KDS-QML", "App");
 
   if (engine.rootObjects().isEmpty()) {
     return -1;

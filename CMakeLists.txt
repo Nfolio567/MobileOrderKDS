@@ -39,7 +39,7 @@ add_subdirectory(
 )
 
 qt_add_qml_module(kds
-  URI KDS
+  URI KDS-QML
   VERSION 0.1
 
   QML_FILES ${KDS_QML_FILES}
