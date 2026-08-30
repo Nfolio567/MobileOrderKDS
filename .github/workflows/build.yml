@@ -9,15 +9,15 @@ jobs:
         run: sudo apt update && sudo apt install build-essential cmake ninja-build libxcb1 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxcb-shape0 libxcb-randr0 libxcb-render0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb-xinput0 libxcb-cursor0 libxkbcommon0 libxkbcommon-x11-0 python3-venv
       - name: Install Qt6.11.2
         run: |
-          python3 -m venv $GITHUB_WORKSPACE/qt-venv && \
-          cd $GITHUB_WORKSPACE/qt-venv && \
+          python3 -m venv $HOME/qt-venv && \
+          cd $HOME/qt-venv && \
           source ./bin/activate && \
           pip install aqtinstall && \
           aqt install-qt linux desktop 6.11.2 linux_gcc_64
       - name: Checkout
         uses: actions/checkout@v7
       - name: Export build files
-        run: cmake -B build -G Ninja -DQt6_DIR="$GITHUB_WORKSPACE/qt-venv/6.11.2/gcc_64/lib/cmake/Qt6"
+        run: cmake -B build -G Ninja -DQt6_DIR="$HOME/qt-venv/6.11.2/gcc_64/lib/cmake/Qt6"
       - name: Check metatype.json
         run: |
           if [ ! -s "build/meta_types/qt6kds_metatypes.json" ]; then
