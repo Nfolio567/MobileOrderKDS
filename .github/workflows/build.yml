@@ -13,7 +13,7 @@ jobs:
           cd $HOME/qt-venv && \
           source ./bin/activate && \
           pip install aqtinstall && \
-          aqt install-qt linux desktop 6.11.2 linux_gcc_64
+          aqt install-qt linux desktop 6.11.2 linux_gcc_64 -m all
       - name: Checkout
         uses: actions/checkout@v7
       - name: Export build files
