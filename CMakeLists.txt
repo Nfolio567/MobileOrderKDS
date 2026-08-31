@@ -19,6 +19,8 @@ set(KDS_QML_FILES
   ./src/qml/Screen01.qml
   ./src/qml/OrderBox.qml
   ./src/qml/Constants.qml
+  ./src/qml/BeforeCooking.qml
+  ./src/qml/BeforeProviding.qml
 )
 
 qt_standard_project_setup(REQUIRES 6.11.1)

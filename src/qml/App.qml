@@ -1,30 +1,21 @@
 import QtQuick
-import QtQuick.Window
+import QtQuick.Controls
 
-Window {
-    // 画面サイズを最大化（表示解像度に合わせる）
-    visibility: Window.Maximized
-    
-    // 或者は、ディスプレイの解像度を直接取得する場合:
-    // width: Screen.desktopAvailableWidth
-    // height: Screen.desktopAvailableHeight
+ApplicationWindow {
+  id: root
 
-    visible: true
-    flags: Qt.FramelessWindowHint
+  visible: false
 
-    Screen01 {
-        id: mainScreen
+  BeforeCooking {
+    id: beforeCooking
+  }
 
-        anchors.fill: parent
-    }
+  BeforeProviding {
+    id: beforeProviding
+  }
 
-    Timer {
-        interval: 100
-
-        running: true
-        repeat: true
-        onTriggered: {
-            mainScreen.timeText = Qt.formatDateTime(new Date(), "MM/dd hh:mm:ss")
-        }
-    }
+  Component.onCompleted: {
+    beforeCooking.show()
+    beforeProviding.show()
+  }
 }
