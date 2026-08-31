@@ -1,5 +1,11 @@
 name: Build
+
 on: push
+
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   cmake_build_ninja:
     name: "Build by CMake with Ninja"
@@ -26,7 +32,8 @@ jobs:
       - name: Build
         run: cmake --build build
       - name: Upload runnable file to artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-pages-artifact@v5
         with: 
-          name: KDS
           path: build/kds
+      - name: Deploy
+        uses: actions/deploy-pages@v5
