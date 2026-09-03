@@ -18,8 +18,8 @@ Websocket::Websocket(QObject *parent) :
     &m_websocket,
     &QWebSocket::textMessageReceived,
     this,
-    [this]() -> void {
-      emit Websocket::textMessage();
+    [this](const QString &message) -> void {
+      emit Websocket::textMessage(message);
     }
   );
 

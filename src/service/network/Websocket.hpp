@@ -14,7 +14,7 @@ class Websocket : public QObject {
 
   signals:
     void connected();
-    void textMessage();
+    void textMessage(const QString message);
     void disconnected();
 
   private:

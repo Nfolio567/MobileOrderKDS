@@ -1,4 +1,5 @@
 #include "HttpClient.hpp"
+#include "network/KdsConfig.hpp"
 #include <QObject>
 #include <QJsonDocument>
 #include <QNetworkRequest>
@@ -9,7 +10,12 @@ HttpClient::HttpClient(QObject *parent) :
   QObject(parent),
   m_request(KDS_ENDPOINT_URL),
   m_manager(this)
-{}
+{
+  m_request.setRawHeader(
+    "Authorization", 
+    "Bearer " + KdsConfig::kdsAccessToken.toUtf8()
+  );
+}
 
 void HttpClient::connect2Server() {
   QNetworkReply *reply = m_manager.get(m_request);
@@ -29,6 +35,8 @@ void HttpClient::connect2Server() {
         reply->readAll()
       );
       
+      // json変数に加工済みレスポンスぶち込んだよ、のシグナル
+      emit jsonUsable(json);      
       reply->deleteLater();
     }
   );

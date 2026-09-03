@@ -23,6 +23,11 @@ set(KDS_QML_FILES
   ./src/qml/BeforeProviding.qml
 )
 
+set(KDS_QML_ELEMENTS
+  ./src/service/KdsService.cpp
+  ./src/service/KdsService.hpp
+)
+
 qt_standard_project_setup(REQUIRES 6.11.1)
 
 qt_add_executable(kds)
@@ -45,4 +50,5 @@ qt_add_qml_module(kds
   VERSION 0.1
 
   QML_FILES ${KDS_QML_FILES}
+  SOURCES ${KDS_QML_ELEMENTS}
 )

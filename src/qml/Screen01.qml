@@ -9,55 +9,77 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Kds 1.0
 
 Rectangle {
-    property alias timeText: timeDisplay.text
+  property alias timeText: timeDisplay.text
 
+  width: parent.width
+  height: parent.height
+
+  color: Constants.backgroundColor
+
+  Column {
     width: parent.width
     height: parent.height
 
-    color: Constants.backgroundColor
+    ToolBar {
+      id: toolBar
+      x: 0
+      y: 0
+      width: parent.width
+      height: 50
+
+      background: Rectangle {
+          color: "#f0f0f0"
+          border.color: "#d0d0d0"
+          border.width: 1
+      }
+
+    // RowLayoutを使うと、Layout.alignmentで簡単に中央揃えが可能です
+      RowLayout {
+        anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        spacing: 20
+
+        Text {
+          id: timeDisplay
+
+          text: "00/00 00:00:00"
+          font.pixelSize: 30
+          // Layout.alignmentでRowLayout内での配置を制御します
+          Layout.alignment: Qt.AlignCenter
+        }
+      }
+    }
+
+    ListModel {
+      id: orderModel
+    }
+
+    Connections {
+      target: HttpClient
+
+      function onJsonUsable(json) {
+        console.log(json);
+      }
+
+      ignoreUnknownSignals: false
+    }
 
     Column {
-        width: parent.width
-        height: parent.height
+      spacing: 10
 
-        ToolBar {
-            id: toolBar
-            x: 0
-            y: 0
-            width: parent.width
-            height: 50
+      Row {
+        ListView {
+          model: orderModel
 
-            background: Rectangle {
-                color: "#f0f0f0"
-                border.color: "#d0d0d0"
-                border.width: 1
-            }
-
-            // RowLayoutを使うと、Layout.alignmentで簡単に中央揃えが可能です
-            RowLayout {
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                spacing: 20
-
-                Text {
-                    id: timeDisplay
-
-                    text: "00/00 00:00:00"
-                    font.pixelSize: 30
-                    // Layout.alignmentでRowLayout内での配置を制御します
-                    Layout.alignment: Qt.AlignCenter
-                }
-            }
+          delegate: OrderBox {
+            
+          }
         }
-        Column {
-            spacing: 10
-
-            Row {
-                OrderBox {}
-            }
-        }
+      }
     }
+  }
 }

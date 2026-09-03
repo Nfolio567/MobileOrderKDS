@@ -3,6 +3,7 @@
 #include "src/service/network/KdsConfig.hpp"
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QJsonObject>
 
 
 /**
@@ -28,6 +29,9 @@ class HttpClient : public QObject {
     * 一応念の為定義したまま。ただ今の所非推奨。てか使えん。
     */
     void reload();
+  
+  signals:
+    void jsonUsable(QJsonDocument json);
 
   private:
     const QUrl KDS_ENDPOINT_URL = QUrl(KdsConfig::firstEndpoint);

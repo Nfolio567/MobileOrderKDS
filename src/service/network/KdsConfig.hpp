@@ -9,5 +9,5 @@ class KdsConfig {
     static QString websocketEndpoint;
     static QString kdsAccessToken;
 
-    static void load();
+    static void load(bool isDev);
 };
