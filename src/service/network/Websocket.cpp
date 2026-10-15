@@ -1,9 +1,11 @@
 #include "Websocket.hpp"
+#include "KdsConfig.hpp"
 #include <QObject>
 #include <QWebSocket>
 
 Websocket::Websocket(QObject *parent) :
-  QObject(parent)
+  QObject(parent),
+  m_request(KDS_WEBSOCKET_ENDPOINT)
 {
   connect( // On Connected
     &m_websocket,
@@ -34,5 +36,9 @@ Websocket::Websocket(QObject *parent) :
 }
 
 void Websocket::connectSocket() {
-  m_websocket.open(KDS_WEBSOCKET_ENDPOINT);
+  m_request.setRawHeader(
+    "Authorization",
+    "Bearer " + KdsConfig::kdsAccessToken.toUtf8()
+  );
+  m_websocket.open(m_request);
 }

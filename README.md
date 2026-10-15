@@ -1,0 +1,52 @@
+# Json example
+
+```json
+{"orders":
+  [
+    {
+      "id":"03fa0935-a4b4-407a-b595-5f4fd4def11d",
+      "userID":"xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "isPos":true,
+      "fakeOrderID":"27A22E",
+      "isCooking":false,
+      "isCooked":false,
+      "isProvided":false,
+      "items":[
+        {
+          "id":64,
+          "orderID":"03fa0935-a4b4-407a-b595-5f4fd4def11d",
+          "productID":{
+            "id":17,
+            "name":"焼きそば（ソース）",
+            "price":1,
+            "stockQuantity":12,
+            "description":"うんこ"
+          },
+          "options":[],
+          "quantity":1
+        },
+        {
+          "id":65,
+          "orderID":"03fa0935-a4b4-407a-b595-5f4fd4def11d",
+          "productID":{
+            "id":17,
+            "name":"焼きそば（ソース）",
+            "price":1,
+            "stockQuantity":12,
+            "description":"うんこ"
+          },
+          "options":[
+            {
+              "options_id":{
+                "id":9,
+                "name":"きざみネギ",
+                "price":0
+              }
+            }
+          ],
+          "quantity":3
+        }
+      ],
+      "paid":true
+    },
+  ]}

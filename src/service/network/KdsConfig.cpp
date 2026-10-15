@@ -6,6 +6,7 @@ QString KdsConfig::firstEndpoint;
 QString KdsConfig::websocketEndpoint;
 QString KdsConfig::kdsAccessToken;
 
+// 設定ファイルから色々読み込み
 void KdsConfig::load(bool isDev) {
   QString mainKey = "Server";
   if (isDev) {

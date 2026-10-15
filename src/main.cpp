@@ -1,9 +1,7 @@
-#include "KdsService.hpp"
-#include "network/HttpClient.hpp"
-#include "network/Websocket.hpp"
+#include "service/KdsService.hpp"
+#include "service/network/HttpClient.hpp"
+#include "service/network/Websocket.hpp"
 #include "service/network/KdsConfig.hpp"
-
-#include <cstring>
 
 #include <QNetworkAccessManager>
 #include <QGuiApplication>
@@ -15,8 +13,8 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
   // 開発モードか否か
-  int result = strcmp(argv[1], "-D");
-  bool isDev = (result == 0);
+  const int MODE_RESULT = strcmp(argv[1], "-D");
+  bool isDev = (MODE_RESULT == 0);
 
   // サービスクラス初期化ゾーン
   KdsConfig::load(isDev);
@@ -35,6 +33,12 @@ int main(int argc, char *argv[]) {
     1, 0,
     "HttpClient",
     client
+  );
+  qmlRegisterSingletonInstance<Websocket>(
+    "Kds",
+    1, 0,
+    "WebSocket",
+    socket
   );
   engine.loadFromModule("KDS-QML", "App");
 

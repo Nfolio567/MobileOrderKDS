@@ -12,7 +12,11 @@ import QtQuick.Layouts
 import Kds 1.0
 
 Rectangle {
+  id: root
   property alias timeText: timeDisplay.text
+  property int toolBarHeight: 50
+  property int titleHeight: 60
+  property int orderBoxMargin: 10
 
   width: parent.width
   height: parent.height
@@ -25,10 +29,8 @@ Rectangle {
 
     ToolBar {
       id: toolBar
-      x: 0
-      y: 0
       width: parent.width
-      height: 50
+      height: root.toolBarHeight
 
       background: Rectangle {
           color: "#f0f0f0"
@@ -36,7 +38,7 @@ Rectangle {
           border.width: 1
       }
 
-    // RowLayoutを使うと、Layout.alignmentで簡単に中央揃えが可能です
+      // RowLayoutを使うと、Layout.alignmentで簡単に中央揃えが可能です
       RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 10
@@ -54,6 +56,18 @@ Rectangle {
       }
     }
 
+    RowLayout {
+      height: root.titleHeight
+      width: parent.width
+
+      Text {
+        text: "調理前・調理中（Before Cooking・Cooking)"
+
+        font.pixelSize: 50
+        Layout.alignment: Qt.AlignCenter
+      }
+    }
+
     ListModel {
       id: orderModel
     }
@@ -61,23 +75,56 @@ Rectangle {
     Connections {
       target: HttpClient
 
-      function onJsonUsable(json) {
-        console.log(json);
+      function onJsonUsable(rawJson) {
+        console.log(rawJson);
+        const json = JSON.parse(rawJson);
+        console.log(json.orders.length);
+        json.orders.forEach((order) => {
+          console.log("unko");
+          const items = order.items.map((item) => {
+            return {
+              product: item.productID.name,
+              options: item.options.map((option) => {
+                option.options_id.name;
+              }),
+            }
+          });
+          orderModel.append({
+            orderID: order.fakeOrderID,
+            orderItems: items,
+          });
+        });
       }
 
       ignoreUnknownSignals: false
     }
 
+    Connections {
+      target: WebSocket
+
+      function onTextMessage(message) {
+        console.log("\n\n" + message);
+      }
+    }
+
     Column {
-      spacing: 10
+      anchors.topMargin: root.orderBoxMargin
+      width: parent.width
+      height: parent.height - root.toolBarHeight - root.titleHeight
+      spacing: root.orderBoxMargin
 
-      Row {
-        ListView {
-          model: orderModel
+      ListView {
+        anchors.fill: parent
+        anchors.margins: root.orderBoxMargin
+        orientation: ListView.Horizontal
 
-          delegate: OrderBox {
-            
-          }
+        spacing: root.orderBoxMargin
+
+        model: orderModel
+
+        delegate: OrderBox {
+          orderID: model.orderID
+          orderItems: model.items
         }
       }
     }

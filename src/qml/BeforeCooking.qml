@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Window
+import QtQuick.Layouts
 
 Window {
     // 画面サイズを最大化（表示解像度に合わせる）
@@ -13,9 +14,9 @@ Window {
     flags: Qt.FramelessWindowHint
 
     Screen01 {
-        id: mainScreen
+      id: mainScreen
 
-        anchors.fill: parent
+      anchors.fill: parent
     }
 
     Timer {

@@ -21,6 +21,7 @@ set(KDS_QML_FILES
   ./src/qml/Constants.qml
   ./src/qml/BeforeCooking.qml
   ./src/qml/BeforeProviding.qml
+  ./src/qml/OrderItems.qml
 )
 
 set(KDS_QML_ELEMENTS

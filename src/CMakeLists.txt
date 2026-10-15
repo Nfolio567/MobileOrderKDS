@@ -3,3 +3,5 @@ target_sources(kds PRIVATE
 )
 
 add_subdirectory(./service)
+add_subdirectory(./model)
+add_subdirectory(./share)

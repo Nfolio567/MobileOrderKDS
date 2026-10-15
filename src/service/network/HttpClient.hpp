@@ -3,7 +3,7 @@
 #include "src/service/network/KdsConfig.hpp"
 #include <QObject>
 #include <QNetworkAccessManager>
-#include <QJsonObject>
+#include <QVariant>
 
 
 /**
@@ -31,7 +31,7 @@ class HttpClient : public QObject {
     void reload();
   
   signals:
-    void jsonUsable(QJsonDocument json);
+    void jsonUsable(QVariant json);
 
   private:
     const QUrl KDS_ENDPOINT_URL = QUrl(KdsConfig::firstEndpoint);

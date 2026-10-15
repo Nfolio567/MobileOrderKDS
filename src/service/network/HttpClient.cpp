@@ -5,6 +5,7 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QDebug>
 
 HttpClient::HttpClient(QObject *parent) :
   QObject(parent),
@@ -31,12 +32,14 @@ void HttpClient::connect2Server() {
         return;
       }
 
-      QJsonDocument json = QJsonDocument::fromJson(
+      /*QJsonDocument json = QJsonDocument::fromJson(
         reply->readAll()
-      );
+      );*/
+      const QByteArray res = reply->readAll();
       
       // json変数に加工済みレスポンスぶち込んだよ、のシグナル
-      emit jsonUsable(json);      
+      emit jsonUsable(res);
+      //qDebug() << res;
       reply->deleteLater();
     }
   );
