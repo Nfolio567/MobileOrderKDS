@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstddef>
 #include <vector>
 
 #include <qqml.h>
@@ -17,7 +16,6 @@ class KdsService : public QObject {
   public:
     explicit KdsService(QObject *parent = nullptr, HttpClient *client = nullptr, Websocket *socket = nullptr);
 
-    Order json2Struct();
     void awaitOrders();
 
   private:

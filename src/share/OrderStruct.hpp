@@ -1,14 +1,19 @@
 #pragma once
 
-#include <QObject>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <vector>
+#include <QString>
+#include <QStringList>
 
-struct Items {
+struct Item {
   QString product;
-  std::vector<QString> options;
+  QStringList options;
+
+  Item(
+    const QString &product,
+    const QStringList &options
+  ) :
+    product(product),
+    options(options)
+    {}
 };
 
 struct Order {
@@ -16,7 +21,7 @@ struct Order {
   bool isCooking;
   bool isCooked;
   bool isProvided;
-  Items items;
+  QList<Item> items;
   int index = 0;
 
   Order(
@@ -24,7 +29,7 @@ struct Order {
     const bool isCooking,
     const bool isCooked,
     const bool isProvided,
-    const Items &items
+    const QList<Item> &items
   ):
     id(id),
     isCooking(isCooking),
@@ -33,18 +38,3 @@ struct Order {
     items(items)
     {}
 };
-
-/**
-  * @brief Ordersに変換
-  */
-inline std::vector<Order> ordersFronJson(const QByteArray &json) {
-  std::vector<Order> orders;
-
-  QJsonDocument qJson = QJsonDocument::fromJson(json);
-  QJsonArray jsonArray = qJson.array();
-
-  for (const QJsonValue i : jsonArray) {
-    QJsonObject object = i.toObject();
-    
-  }
-}

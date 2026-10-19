@@ -20,15 +20,12 @@ void KdsService::awaitOrders() {
     &HttpClient::jsonUsable,
     this,
     [this](QVariant json) -> void {
-
-
       m_socket->connectSocket();
+
+
     }
   );
 
   m_client->connect2Server();
 }
 
-Order json2Struct() {
-
-}

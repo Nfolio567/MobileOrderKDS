@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Window
+import Kds 1.0
 
 Window {
     // 画面サイズを最大化（表示解像度に合わせる）
@@ -13,9 +14,12 @@ Window {
     flags: Qt.FramelessWindowHint
 
     Screen01 {
-        id: mainScreen
+      id: mainScreen
 
-        anchors.fill: parent
+      gridModel: OrderListProvidingModel
+      title: "提供前（Before Provide)"
+
+      anchors.fill: parent
     }
 
     Timer {

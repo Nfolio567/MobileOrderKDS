@@ -9,7 +9,6 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Kds 1.0
 
 Rectangle {
   id: root
@@ -17,6 +16,8 @@ Rectangle {
   property int toolBarHeight: 50
   property int titleHeight: 60
   property int orderBoxMargin: 10
+  property string title: ""
+  property QtObject gridModel
 
   width: parent.width
   height: parent.height
@@ -61,18 +62,18 @@ Rectangle {
       width: parent.width
 
       Text {
-        text: "調理前・調理中（Before Cooking・Cooking)"
+        text: root.title
 
         font.pixelSize: 50
         Layout.alignment: Qt.AlignCenter
       }
     }
 
-    ListModel {
+    /*ListModel {
       id: orderModel
-    }
+    }*/
 
-    Connections {
+    /*Connections {
       target: HttpClient
 
       function onJsonUsable(rawJson) {
@@ -97,33 +98,45 @@ Rectangle {
       }
 
       ignoreUnknownSignals: false
-    }
+    }*/
 
-    Connections {
+    /*Connections {
       target: WebSocket
 
       function onTextMessage(message) {
         console.log("\n\n" + message);
       }
+    }*/
+
+    Connections {
+      target: OrderListModel
+
+    function onError(message) {
+        console.error(message);
+      }
     }
 
-    Column {
+    GridView {
+      id: grid
+
       anchors.topMargin: root.orderBoxMargin
       width: parent.width
       height: parent.height - root.toolBarHeight - root.titleHeight
-      spacing: root.orderBoxMargin
 
-      ListView {
-        anchors.fill: parent
-        anchors.margins: root.orderBoxMargin
-        orientation: ListView.Horizontal
+      cellWidth: 300
+      cellHeight: 300
 
-        spacing: root.orderBoxMargin
+      model: root.gridModel
 
-        model: orderModel
+      delegate: Rectangle{
+        width: grid.cellWidth
+        height: grid.cellHeight
 
-        delegate: OrderBox {
+        OrderBox {
           orderID: model.orderID
+          isCooking: model.isCooking
+          isCooked: model.isCooked
+          isProvided: model.isProvided
           orderItems: model.items
         }
       }

@@ -27,19 +27,27 @@ void HttpClient::connect2Server() {
     [this, reply]() -> void
     {
       if (reply->error())
-      {
+      { // 失敗
         reply->deleteLater();
-        return;
+        emit error(
+          QString("Failed request: Code[%1]\nBody[%2]")
+          .arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+          .arg(reply->readAll())
+        );
+      } else {
+        const QJsonDocument json = QJsonDocument::fromJson(
+          reply->readAll()
+        );
+        // json変換失敗
+        if (json.isNull()) {
+          emit error("Failed convert from text body to json.");
+        }
+
+        // json変数に加工済みレスポンスぶち込んだよ、のシグナル・要は成功
+        emit jsonUsable(json);
       }
 
-      /*QJsonDocument json = QJsonDocument::fromJson(
-        reply->readAll()
-      );*/
-      const QByteArray res = reply->readAll();
-      
-      // json変数に加工済みレスポンスぶち込んだよ、のシグナル
-      emit jsonUsable(res);
-      //qDebug() << res;
+      // replyオブジェクト削除
       reply->deleteLater();
     }
   );

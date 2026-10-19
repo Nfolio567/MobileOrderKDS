@@ -3,12 +3,15 @@ import QtQuick.Effects
 
 Rectangle {
   property string orderID: ""
+  property bool isCooking: false
+  property bool isCooked: false
+  property bool isProvided: false
   property var orderItems: []
 
   id: orderBox
   // Constants.widthなどを参照してスタイルを統一
-  width: 300
-  height: 300
+  anchors.fill: parent
+  anchors.margins: 10
   
   // Constants.qmlで定義されている色や、
   // 必要であれば新しいプロパティをConstantsに追加して参照します
@@ -29,8 +32,14 @@ Rectangle {
     shadowVerticalOffset: 4
   }
 
-  Text {
-    text: parent.orderItems[0].product
-    anchors.centerIn: parent
+  Column {
+    Text {
+      text: parent.orderID
+      anchors.centerIn: parent
+    }
+    Text {
+      text: parent.orderItem
+    }
   }
+
 }

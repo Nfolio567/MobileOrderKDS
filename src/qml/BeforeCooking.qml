@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
+import Kds 1.0
 
 Window {
     // 画面サイズを最大化（表示解像度に合わせる）
@@ -15,6 +16,9 @@ Window {
 
     Screen01 {
       id: mainScreen
+
+      gridModel: OrderListCookModel
+      title: "調理前・調理中（Before Cooking・Cooking)"
 
       anchors.fill: parent
     }

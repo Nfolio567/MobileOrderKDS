@@ -21,6 +21,7 @@ class HttpClient : public QObject {
     * @brief サーバーに接続
     */
     void connect2Server();
+
     /**
     * @brief リロード
     * 
@@ -31,7 +32,12 @@ class HttpClient : public QObject {
     void reload();
   
   signals:
-    void jsonUsable(QVariant json);
+    void jsonUsable(const QJsonDocument &json);
+
+  /**
+   * 何かエラーが来た時にQMLに知らせる用
+   */
+  void error(QString message);
 
   private:
     const QUrl KDS_ENDPOINT_URL = QUrl(KdsConfig::firstEndpoint);

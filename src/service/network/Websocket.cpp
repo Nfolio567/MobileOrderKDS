@@ -1,4 +1,7 @@
 #include "Websocket.hpp"
+
+#include <QJsonDocument>
+
 #include "KdsConfig.hpp"
 #include <QObject>
 #include <QWebSocket>
@@ -21,7 +24,13 @@ Websocket::Websocket(QObject *parent) :
     &QWebSocket::textMessageReceived,
     this,
     [this](const QString &message) -> void {
-      emit Websocket::textMessage(message);
+      const QJsonDocument json = QJsonDocument::fromJson(message.toUtf8());
+
+      if (json.isNull()) {
+        emit error("Failed convert from websocket text to json");
+      }
+
+      emit Websocket::textMessage(json);
     }
   );
 

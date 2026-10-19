@@ -2,7 +2,6 @@
 
 #include "src/service/network/KdsConfig.hpp"
 #include <QObject>
-#include <QUrl>
 #include <QWebSocket>
 
 class Websocket : public QObject {
@@ -14,8 +13,9 @@ class Websocket : public QObject {
 
   signals:
     void connected();
-    void textMessage(const QString &message);
+    void textMessage(const QJsonDocument &message);
     void disconnected();
+    void error(const QString &message);
 
   private:
     const QUrl KDS_WEBSOCKET_ENDPOINT = QUrl(KdsConfig::websocketEndpoint);

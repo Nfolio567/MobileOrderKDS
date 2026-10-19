@@ -2,45 +2,61 @@
 #include "service/network/HttpClient.hpp"
 #include "service/network/Websocket.hpp"
 #include "service/network/KdsConfig.hpp"
+#include "model/OrderListModel.hpp"
 
-#include <QNetworkAccessManager>
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 #include <QtQml>
-#include <QtCore/QDebug>
+#include <QString>
+
+#include "model/OrderListCookFilter.hpp"
+#include "model/OrderListProvidingFilter.hpp"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
-  // 開発モードか否か
-  const int MODE_RESULT = strcmp(argv[1], "-D");
-  bool isDev = (MODE_RESULT == 0);
+  QString string = "";
 
-  // サービスクラス初期化ゾーン
+  bool isDev = false;
+
+  // 開発モードか否か
+  if (argc > 1) {
+    const int MODE_RESULT = strcmp(argv[1], "-D");
+    isDev = (MODE_RESULT == 0);
+  }
+
+  // クラス初期化ゾーン
   KdsConfig::load(isDev);
   auto *client = new HttpClient();
   auto *socket = new Websocket();
+  auto *orderListModel = new OrderListModel(&app, client, socket);
   KdsService kdsService(
     &app,
     client,
     socket
   );
 
+  auto *beforeCooking = new OrderListCookFilter(&app);
+  auto *beforeProviding = new OrderListProvidingFilter(&app);
+
+  beforeCooking->setSourceModel(orderListModel);
+  beforeProviding->setSourceModel(orderListModel);
+
   // QMLエンジン初期化ゾーン
   QQmlApplicationEngine engine;
-  qmlRegisterSingletonInstance<HttpClient>(
+  qmlRegisterSingletonInstance<OrderListCookFilter>(
     "Kds",
     1, 0,
-    "HttpClient",
-    client
-  );
-  qmlRegisterSingletonInstance<Websocket>(
+    "OrderListCookModel",
+    beforeCooking
+    );
+  qmlRegisterSingletonInstance<OrderListProvidingFilter>(
     "Kds",
     1, 0,
-    "WebSocket",
-    socket
+    "OrderListProvidingModel",
+    beforeProviding
   );
-  engine.loadFromModule("KDS-QML", "App");
+
+  engine.loadFromModule("QMLModules", "App");
 
   // Httpリクエストおくって、WS初期化まで
   kdsService.awaitOrders();

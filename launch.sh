@@ -4,4 +4,4 @@ echo "\nBuild:"
 cmake -B build -G Ninja
 cmake --build build
 echo "\nRun:"
-./build/kds -D
+./build/kds $1

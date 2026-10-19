@@ -1,9 +1,13 @@
+#pragma once
+
 #include <vector>
 
 #include <QAbstractListModel>
 #include <QObject>
 
 #include "../share/OrderStruct.hpp"
+#include "network/HttpClient.hpp"
+#include "network/Websocket.hpp"
 
 class OrderListModel : public QAbstractListModel {
   Q_OBJECT
@@ -13,14 +17,15 @@ public:
     ORDER_ID_ROLE = Qt::UserRole + 1,
     IS_COOKING_ROLE,
     IS_COOKED_ROLE,
-    IS_PROVIDED_ROLE
+    IS_PROVIDED_ROLE,
+    ITEMS_ROLE
   };
 
-  explicit OrderListModel(QObject *parent = nullptr);
+  explicit OrderListModel(QObject *parent = nullptr, const HttpClient *client = nullptr, const Websocket *socket = nullptr);
 
   // 要素数
   int rowCount(const QModelIndex &parent) const override {
-    // このリストモデルは階層構造を持たないので、子要素か否かで行数は0を返す
+    // リストモデルは階層構造を持たないので、子要素だった場合は行数0を返す
     if (parent.isValid()) {
       return 0;
     }
@@ -34,7 +39,6 @@ public:
       return {};
     }
 
-    // コピーはしません！！ポインタの管理もしません！！
     const Order &order = m_orders.at(m_orderIDs[index.row()]);
 
     // roleによって返すやつ変える。returnしてるので特にbreakはいらない。
@@ -43,6 +47,16 @@ public:
       case IS_COOKING_ROLE: return order.isCooking;
       case IS_COOKED_ROLE: return order.isCooked;
       case IS_PROVIDED_ROLE: return order.isProvided;
+      case ITEMS_ROLE: {
+        QVariantList items;
+        for (const Item &item : order.items) {
+          items.append(QVariantMap{
+            { "product", item.product },
+            { "options", item.options}
+          });
+        }
+        return items;
+      }
       default: return {};
     }
   }
@@ -54,17 +68,48 @@ public:
       {IS_COOKING_ROLE, "isCooking"},
       {IS_COOKED_ROLE, "isCooked"},
       {IS_PROVIDED_ROLE, "isProvided"},
+      {ITEMS_ROLE, "items"}
     };
   }
 
-  // オーダー配列ぶちこみ
+  /**
+  * 注文たちを一気に追加
+  * @param orders
+  */
   void set(std::vector<Order> &orders);
-  // 要素追加
+
+  /**
+  * 指定した注文を追加する
+  * @param order
+  */
   void append(Order &order);
-  // 要素更新
-  int update(const QString &orderID, const Order &order);
-  // 要素削除
+
+  /**
+  * 指定した注文を更新する
+  * @param orderID お客さん側の短いID
+  * @param order 更新内容
+  * @return 指定した要素が存在しているか(1: 成功, 0: 存在しない)
+  */
+  int update(const QString &orderID, Order &order);
+
+  /**
+  * 指定した注文を削除する
+  * @param orderID お客さん側の短いID
+  * @return 削除する注文が存在しているか(0: 成功, 1: 存在しない)
+  */
   int remove(const QString &orderID);
+
+  /**
+   * QJsonDocumentをOrderの配列に変換
+   * @param ordersObject
+   * @return Orderの配列
+   */
+  static std::vector<Order> json2Orders(const QJsonObject &ordersObject);
+
+  bool contains(const QString &orderID);
+
+signals:
+  void error(const QString &message);
 
 private:
   // orderIDをkeyにしてorderの中身格納

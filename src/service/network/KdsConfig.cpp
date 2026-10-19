@@ -7,13 +7,13 @@ QString KdsConfig::websocketEndpoint;
 QString KdsConfig::kdsAccessToken;
 
 // 設定ファイルから色々読み込み
-void KdsConfig::load(bool isDev) {
+void KdsConfig::load(const bool isDev) {
   QString mainKey = "Server";
   if (isDev) {
     mainKey = "Dev";
   }
 
-  QSettings settings("./resources/setting.ini", QSettings::IniFormat);
+  const QSettings settings("./resources/setting.ini", QSettings::IniFormat);
 
   firstEndpoint = settings.value(mainKey + "/FirstEndpoint").toString();
   websocketEndpoint = settings.value(mainKey + "/WebsocketEndpoint").toString();

@@ -1,17 +1,126 @@
-#include <QObject>
 #include <vector>
 
 #include "../share/OrderStruct.hpp"
 #include "OrderListModel.hpp"
 
-OrderListModel::OrderListModel(QObject *parent) :
-  QAbstractListModel(parent)
-{}
+#include <QJsonArray>
+#include <QJsonObject>
 
-/**
- * 注文たちを一気に追加
- * @param orders
- */
+#include "network/HttpClient.hpp"
+#include "network/Websocket.hpp"
+
+OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const Websocket *socket) :
+  QAbstractListModel(parent) {
+  connect(
+    client,
+    &HttpClient::jsonUsable,
+    this,
+    [this](const QJsonDocument &json) -> void {
+      qDebug() << "Http";
+      std::vector<Order> orders = json2Orders(json.object());
+      for (const Order order : orders) {
+        qDebug() << order.id;
+      }
+
+      set(orders);
+    }
+  );
+
+  connect(
+    socket,
+    &Websocket::textMessage,
+    this,
+    [this](const QJsonDocument &message) -> void {
+      qDebug() << message;
+      std::vector<Order> orders = json2Orders(message.object());
+      for (const Order order : orders) {
+        qDebug() << order.id;
+      }
+
+      for (int i=0;i<orders.size();i++) {
+        // デフォルトでfalseにしてるので存在はしてる
+        // 提供済みってことはもう用済みなので削除
+        if (orders[i].isProvided) {
+          qDebug() << "remove";
+          remove(orders[i].id);
+        } else if (update(orders[i].id, orders[i])) {
+          // updateで存在してなかったら即「1」が返されるので判定、成功したらそのままupdateして「0」が返ってパスされる
+          append(orders[i]);
+        }
+      }
+    }
+  );
+
+  // when receive error
+  connect(
+    client,
+    &HttpClient::error,
+    this,
+    [this](const QString &message) -> void {
+      emit error(
+        QString("HttpClient error: %1")
+        .arg(message)
+      );
+    }
+  );
+
+  connect(
+    socket,
+    &Websocket::error,
+    this,
+    [this](const QString &message) -> void {
+      emit error(
+        QString("WebSocket error: %1")
+        .arg(message)
+      );
+    }
+  );
+}
+
+auto OrderListModel::json2Orders(const QJsonObject &ordersObject) -> std::vector<Order> {
+  // 最終的に返すやつ
+  std::vector<Order> orders;
+
+  for (const auto orderArrayRef : ordersObject["orders"].toArray()) {
+    const auto orderObject = orderArrayRef.toObject();
+
+    // OrderItemsループ
+    QList<Item> items;
+    for (const auto &orderItemJsonObject : orderObject["items"].toArray()) {
+      QJsonObject orderItemObject = orderItemJsonObject.toObject();
+
+      // optionsループ
+      QList<QString> options;
+      for (const auto &optionJsonObject : orderItemObject["options"].toArray()) {
+        // option格納
+        options.emplace_back(optionJsonObject.toString());
+      }
+
+      // item格納
+      items.emplace_back(
+        std::move(
+          Item(
+            orderItemObject["product"].toString(),
+            options
+      )));
+    }
+
+    qDebug() << QString("loop: %1").arg(orderObject["id"].toString());
+    // order格納
+    orders.emplace_back(
+      std::move(
+        Order(
+          orderObject["id"].toString(),
+          orderObject["isCooking"].toBool(),
+          orderObject["isCooked"].toBool(),
+          orderObject["isProvided"].toBool(),
+          items
+    )));
+  }
+
+  return orders;
+}
+
 void OrderListModel::set(std::vector<Order> &orders) {
   // 追加ループ
   for (int i=0;i<orders.size();i++) {
@@ -19,10 +128,6 @@ void OrderListModel::set(std::vector<Order> &orders) {
   }
 }
 
-/**
- * 指定した注文を追加する
- * @param order
- */
 void OrderListModel::append(Order &order) {
   // 今から追加するやつのindex
   const int addingIndex = static_cast<int>(m_orderIDs.size());
@@ -39,18 +144,12 @@ void OrderListModel::append(Order &order) {
   endInsertRows();
 }
 
-/**
- * 指定した注文を更新する
- * @param orderID お客さん側の短いID
- * @param order 更新内容
- * @return 指定した要素が存在しているか(1: 成功, 0: 存在しない)
- */
-int OrderListModel::update(const QString &orderID, const Order &order) {
+int OrderListModel::update(const QString &orderID, Order &order) {
   try {
     // updateするやつのindex
     const int changedIndex = m_orders.at(orderID).index;
     // update
-    m_orders.at(orderID) = order;
+    m_orders.at(orderID) = std::move(order);
     emit dataChanged(
       index(changedIndex),
       index(changedIndex)
@@ -61,14 +160,9 @@ int OrderListModel::update(const QString &orderID, const Order &order) {
   }
 }
 
-/**
- * 指定した注文を削除する
- * @param orderID お客さん側の短いID
- * @return 削除する注文が存在しているか(0: 成功, 1: 存在しない)
- */
 int OrderListModel::remove(const QString &orderID) {
   try {
-    // ここでatがパスでき中たらcatchまでいくます。
+    // ここでatがパスしなかったらcatchされる。
     const int removedIndex = m_orders.at(orderID).index;
 
     // 削除開始
@@ -76,7 +170,16 @@ int OrderListModel::remove(const QString &orderID) {
     m_orderIDs.erase(m_orderIDs.begin() + removedIndex);
     m_orders.erase(orderID);
     endRemoveRows();
+
+    return 0;
   } catch (std::out_of_range e) {
     return 1;
   }
+}
+
+bool OrderListModel::contains(const QString &orderID) {
+  const auto iterator = m_orders.find(orderID);
+
+  // 存在するか
+  return iterator != m_orders.end();
 }

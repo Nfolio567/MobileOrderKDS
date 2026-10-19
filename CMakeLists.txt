@@ -25,8 +25,8 @@ set(KDS_QML_FILES
 )
 
 set(KDS_QML_ELEMENTS
-  ./src/service/KdsService.cpp
-  ./src/service/KdsService.hpp
+  ./src/model/OrderListCookFilter.hpp
+  src/model/OrderListProvidingFilter.hpp
 )
 
 qt_standard_project_setup(REQUIRES 6.11.1)
@@ -47,7 +47,7 @@ add_subdirectory(
 )
 
 qt_add_qml_module(kds
-  URI KDS-QML
+  URI QMLModules
   VERSION 0.1
 
   QML_FILES ${KDS_QML_FILES}
