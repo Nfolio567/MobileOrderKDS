@@ -4,9 +4,11 @@
 #include "service/network/KdsConfig.hpp"
 #include "model/OrderListModel.hpp"
 
+#include <QQmlApplicationEngine>
 #include <QGuiApplication>
-#include <QtQml>
+#include <QFontDatabase>
 #include <QString>
+#include <QDirIterator>
 
 #include "model/OrderListCookFilter.hpp"
 #include "model/OrderListProvidingFilter.hpp"
@@ -14,11 +16,41 @@
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
-  QString string = "";
+  QDirIterator it(":/", QDirIterator::Subdirectories);
+  while (it.hasNext()) qDebug() << it.next();
 
-  bool isDev = false;
+
+  // フォントロード
+  const QString atkinsonRoot = ":/qt/qml/QMLModules/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-%1.ttf";
+  const int atkinsonFontID =
+    QFontDatabase::addApplicationFont(atkinsonRoot.arg("Regular"));
+  QFontDatabase::addApplicationFont(atkinsonRoot.arg("Bold"));
+
+  const QString zenKakuGothicNewRoot = ":/qt/qml/QMLModules/fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-%1.ttf";
+  const int zenKakuGothicNewFontID =
+    QFontDatabase::addApplicationFont(zenKakuGothicNewRoot.arg("Regular"));
+  QFontDatabase::addApplicationFont(zenKakuGothicNewRoot.arg("Medium"));
+  QFontDatabase::addApplicationFont(zenKakuGothicNewRoot.arg("Bold"));
+
+  // フォントのラベル取得
+  const QStringList atkinson = QFontDatabase::applicationFontFamilies(atkinsonFontID);
+  const QStringList zenKakuGothicNew = QFontDatabase::applicationFontFamilies(zenKakuGothicNewFontID);
+
+  // ちゃんとうまく読み込めてたらセットする。ダメだったらワーニング出す
+  if (!atkinson.isEmpty() && !zenKakuGothicNew.isEmpty()) {
+    QFont font;
+    font.setFamilies({
+      atkinson.first(),
+      zenKakuGothicNew.first(),
+    });
+    app.setFont(font);
+  } else {
+    qWarning() << "Failed load fonts";
+  }
+
 
   // 開発モードか否か
+  bool isDev = false;
   if (argc > 1) {
     const int MODE_RESULT = strcmp(argv[1], "-D");
     isDev = (MODE_RESULT == 0);

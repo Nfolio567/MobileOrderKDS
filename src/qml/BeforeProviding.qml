@@ -13,7 +13,7 @@ Window {
     visible: true
     flags: Qt.FramelessWindowHint
 
-    Screen01 {
+    Base {
       id: mainScreen
 
       gridModel: OrderListProvidingModel

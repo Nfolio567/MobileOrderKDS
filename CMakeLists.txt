@@ -16,17 +16,22 @@ find_package(Qt6 6.11 COMPONENTS
 
 set(KDS_QML_FILES 
   ./src/qml/App.qml
-  ./src/qml/Screen01.qml
+  ./src/qml/Base.qml
   ./src/qml/OrderBox.qml
-  ./src/qml/Constants.qml
   ./src/qml/BeforeCooking.qml
   ./src/qml/BeforeProviding.qml
   ./src/qml/OrderItems.qml
 )
 
 set(KDS_QML_ELEMENTS
-  ./src/model/OrderListCookFilter.hpp
-  src/model/OrderListProvidingFilter.hpp
+)
+
+set(KDS_QML_RESOURCES
+  ./fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Regular.ttf
+  ./fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Bold.ttf
+  ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Regular.ttf
+  ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Medium.ttf
+  ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Bold.ttf
 )
 
 qt_standard_project_setup(REQUIRES 6.11.1)
@@ -52,4 +57,5 @@ qt_add_qml_module(kds
 
   QML_FILES ${KDS_QML_FILES}
   SOURCES ${KDS_QML_ELEMENTS}
+  RESOURCES ${KDS_QML_RESOURCES}
 )

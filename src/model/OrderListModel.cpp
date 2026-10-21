@@ -17,6 +17,7 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
     this,
     [this](const QJsonDocument &json) -> void {
       qDebug() << "Http";
+      qDebug() << json;
       std::vector<Order> orders = json2Orders(json.object());
       for (const Order order : orders) {
         qDebug() << order.id;
@@ -101,7 +102,8 @@ auto OrderListModel::json2Orders(const QJsonObject &ordersObject) -> std::vector
         std::move(
           Item(
             orderItemObject["product"].toString(),
-            options
+            options,
+            orderItemObject["quantity"].toInt()
       )));
     }
 

@@ -1,5 +1,6 @@
 #pragma once
-#include <qsortfilterproxymodel.h>
+
+#include <QSortFilterProxyModel>
 
 #include "OrderListModel.hpp"
 

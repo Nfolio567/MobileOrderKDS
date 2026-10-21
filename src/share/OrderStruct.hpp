@@ -6,13 +6,16 @@
 struct Item {
   QString product;
   QStringList options;
+  int quantity;
 
   Item(
     const QString &product,
-    const QStringList &options
+    const QStringList &options,
+    const int quantity
   ) :
     product(product),
-    options(options)
+    options(options),
+    quantity(quantity)
     {}
 };
 

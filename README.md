@@ -21,4 +21,11 @@
         }
       ]
     }
-  ]}
+  ]
+}
+```
+
+# 注文状態のイロハ
+🔴<span style="color: red;">調理前</span>\
+🟡<span style="color: yellow;">調理中</span>\
+🟢<span style="color: lightgreen;">提供前</span>

@@ -52,7 +52,8 @@ public:
         for (const Item &item : order.items) {
           items.append(QVariantMap{
             { "product", item.product },
-            { "options", item.options}
+            { "options", item.options },
+            { "quantity", item.quantity }
           });
         }
         return items;

@@ -4,8 +4,6 @@
 
 #include <QObject>
 
-#include "src/share/OrderStruct.hpp"
-
 KdsService::KdsService(QObject *parent, HttpClient *client, Websocket *socket):
   QObject(parent),
   m_client(client),
@@ -19,10 +17,8 @@ void KdsService::awaitOrders() {
     m_client,
     &HttpClient::jsonUsable,
     this,
-    [this](QVariant json) -> void {
+    [this](const QJsonDocument &json) -> void {
       m_socket->connectSocket();
-
-
     }
   );
 
