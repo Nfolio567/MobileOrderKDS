@@ -16,11 +16,12 @@ find_package(Qt6 6.11 COMPONENTS
 
 set(KDS_QML_FILES 
   ./src/qml/App.qml
-  ./src/qml/Base.qml
+  ./src/qml/KdsBase.qml
   ./src/qml/OrderBox.qml
   ./src/qml/BeforeCooking.qml
   ./src/qml/BeforeProviding.qml
   ./src/qml/OrderItems.qml
+  ./src/qml/Pickup.qml
 )
 
 set(KDS_QML_ELEMENTS

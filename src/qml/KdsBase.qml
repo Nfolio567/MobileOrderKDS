@@ -57,49 +57,10 @@ Rectangle {
       font.pixelSize: 50
     }
 
-    /*ListModel {
-      id: orderModel
-    }*/
-
-    /*Connections {
-      target: HttpClient
-
-      function onJsonUsable(rawJson) {
-        console.log(rawJson);
-        const json = JSON.parse(rawJson);
-        console.log(json.orders.length);
-        json.orders.forEach((order) => {
-          console.log("unko");
-          const items = order.items.map((item) => {
-            return {
-              product: item.productID.name,
-              options: item.options.map((option) => {
-                option.options_id.name;
-              }),
-            }
-          });
-          orderModel.append({
-            orderID: order.fakeOrderID,
-            orderItems: items,
-          });
-        });
-      }
-
-      ignoreUnknownSignals: false
-    }*/
-
-    /*Connections {
-      target: WebSocket
-
-      function onTextMessage(message) {
-        console.log("\n\n" + message);
-      }
-    }*/
-
     Connections {
       target: OrderListModel
 
-    function onError(message) {
+      function onError(message) {
         console.error(message);
       }
     }

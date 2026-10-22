@@ -14,10 +14,8 @@
 #include "model/OrderListProvidingFilter.hpp"
 
 int main(int argc, char *argv[]) {
+  // Qt初期化
   QGuiApplication app(argc, argv);
-
-  QDirIterator it(":/", QDirIterator::Subdirectories);
-  while (it.hasNext()) qDebug() << it.next();
 
 
   // フォントロード

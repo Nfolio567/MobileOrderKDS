@@ -14,7 +14,7 @@ Window {
     visible: true
     flags: Qt.FramelessWindowHint
 
-    Base {
+    KdsBase {
       id: mainScreen
 
       gridModel: OrderListCookModel

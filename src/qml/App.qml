@@ -14,8 +14,13 @@ ApplicationWindow {
     id: beforeProviding
   }
 
+  Pickup {
+    id: pickupBoard
+  }
+
   Component.onCompleted: {
     beforeCooking.show()
     beforeProviding.show()
+    pickupBoard.show()
   }
 }
