@@ -10,7 +10,12 @@
 #include "network/Websocket.hpp"
 
 OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const Websocket *socket) :
-  QAbstractListModel(parent) {
+  QAbstractListModel(parent),
+  m_sound(this)
+{
+  m_sound.setSource(QUrl("qrc:/qt/qml/QMLModules/resources/sound.wav"));
+  m_sound.setVolume(1.0);
+
   connect(
     client,
     &HttpClient::jsonUsable,
@@ -58,10 +63,8 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
     &HttpClient::error,
     this,
     [this](const QString &message) -> void {
-      emit error(
-        QString("HttpClient error: %1")
-        .arg(message)
-      );
+        qWarning() << QString("HttpClient error: %1")
+          .arg(message);
     }
   );
 
@@ -70,13 +73,13 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
     &Websocket::error,
     this,
     [this](const QString &message) -> void {
-      emit error(
-        QString("WebSocket error: %1")
-        .arg(message)
-      );
+      qWarning() << QString("WebSocket error: %1")
+        .arg(message);
     }
   );
 }
+
+OrderListModel::~OrderListModel() = default;
 
 auto OrderListModel::json2Orders(const QJsonObject &ordersObject) -> std::vector<Order> {
   // 最終的に返すやつ
@@ -144,6 +147,7 @@ void OrderListModel::append(Order &order) {
   m_orders.emplace(order.id, order);
 
   endInsertRows();
+  m_sound.play();
 }
 
 int OrderListModel::update(const QString &orderID, Order &order) {

@@ -4,6 +4,7 @@
 
 #include <QAbstractListModel>
 #include <QObject>
+#include <QSoundEffect>
 
 #include "../share/OrderStruct.hpp"
 #include "network/HttpClient.hpp"
@@ -22,6 +23,7 @@ public:
   };
 
   explicit OrderListModel(QObject *parent = nullptr, const HttpClient *client = nullptr, const Websocket *socket = nullptr);
+  ~OrderListModel() override;
 
   // 要素数
   int rowCount(const QModelIndex &parent) const override {
@@ -109,12 +111,11 @@ public:
 
   bool contains(const QString &orderID);
 
-signals:
-  void error(const QString &message);
-
 private:
   // orderIDをkeyにしてorderの中身格納
   std::map<QString, Order> m_orders;
   // orderIDの配列、data()で使用
   std::vector<QString> m_orderIDs;
+
+  QSoundEffect m_sound;
 };
