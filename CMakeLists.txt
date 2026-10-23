@@ -11,11 +11,13 @@ find_package(Qt6 6.11 COMPONENTS
   Qml
   Network
   WebSockets
+  Multimedia
   REQUIRED
 )
 
-set(KDS_QML_FILES 
-  ./src/qml/App.qml
+set(KDS_QML_FILES
+  ./src/qml/KdsMain.qml
+  ./src/qml/PickupMain.qml
   ./src/qml/KdsBase.qml
   ./src/qml/OrderBox.qml
   ./src/qml/BeforeCooking.qml
@@ -33,6 +35,7 @@ set(KDS_QML_RESOURCES
   ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Regular.ttf
   ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Medium.ttf
   ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Bold.ttf
+  ./resources/sound.wav
 )
 
 qt_standard_project_setup(REQUIRES 6.11.1)
@@ -46,6 +49,7 @@ target_link_libraries(kds PRIVATE
     Qt6::Qml
     Qt6::Network
     Qt6::WebSockets
+    Qt6::Multimedia
 )
 
 add_subdirectory(

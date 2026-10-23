@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 
+// KDS
 ApplicationWindow {
   id: root
 
@@ -14,13 +15,8 @@ ApplicationWindow {
     id: beforeProviding
   }
 
-  Pickup {
-    id: pickupBoard
-  }
-
   Component.onCompleted: {
     beforeCooking.show()
     beforeProviding.show()
-    pickupBoard.show()
   }
 }

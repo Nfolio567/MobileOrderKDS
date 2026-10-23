@@ -8,6 +8,7 @@ Window {
   id: pickupRoot
   property int progressCellWidth: 200
   property int cellWidth: 300
+  property string pickupReadyColor: "deeppink"
 
   width: Screen.desktopAvailableWidth
   height: Screen.desktopAvailableHeight
@@ -17,6 +18,8 @@ Window {
 
   ColumnLayout {
     anchors.fill: parent
+
+    // タイトルバー
     ToolBar {
       id: titleBar
 
@@ -44,31 +47,44 @@ Window {
       }
     }
 
+    // 番号種別
     RowLayout {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      Text {
+      Label {
         Layout.fillWidth: true
 
         text: "お待ち番号・In Progress"
         font.pixelSize: 50
         horizontalAlignment: Text.AlignHCenter
+        color: "white"
+
+        background: Rectangle {
+          color: "gray"
+        }
       }
 
-      Text {
+      Label {
         Layout.fillWidth: true
 
         text: "お呼び番号・Now Serving"
         font.pixelSize: 50
         horizontalAlignment: Text.AlignHCenter
+        color: "white"
+
+        background: Rectangle {
+          color: "deeppink"
+        }
       }
     }
 
+    // 注文番号ズ
     RowLayout {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
+      // 待ち番号
       Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -87,6 +103,7 @@ Window {
           delegate: Text {
             text: orderID
             font.pixelSize: 40
+            color: "gray"
           }
         }
       }
@@ -97,6 +114,7 @@ Window {
         color: "#343434"
       }
 
+      // 提供可能番号
       Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -115,9 +133,27 @@ Window {
           delegate: Text {
             text: orderID
             font.pixelSize: 70
+
+            // 緑と黒で点滅させる
+            Timer {
+              interval: 500
+
+              running: true
+              repeat: true
+              onTriggered: {
+                if (pickupRoot.pickupReadyColor === "deeppink") {
+                  pickupRoot.pickupReadyColor = "black";
+                } else if (pickupRoot.pickupReadyColor === "black") {
+                  pickupRoot.pickupReadyColor = "deeppink";
+                }
+
+                parent.color = pickupRoot.pickupReadyColor;
+              }
+            }
           }
         }
       }
     }
   }
+
 }

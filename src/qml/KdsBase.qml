@@ -57,14 +57,6 @@ Rectangle {
       font.pixelSize: 50
     }
 
-    Connections {
-      target: OrderListModel
-
-      function onError(message) {
-        console.error(message);
-      }
-    }
-
     GridView {
       id: grid
 

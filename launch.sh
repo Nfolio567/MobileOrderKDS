@@ -4,4 +4,4 @@ echo "\nBuild:"
 cmake -B build -G Ninja
 cmake --build build
 echo "\nRun:"
-./build/kds $1
+QT_FATAL_WARNINGS=1 ./build/kds $1

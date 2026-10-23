@@ -47,11 +47,21 @@ int main(int argc, char *argv[]) {
   }
 
 
-  // 開発モードか否か
+  // 開発モードか否か・KDSかPickupかどうか
   bool isDev = false;
-  if (argc > 1) {
-    const int MODE_RESULT = strcmp(argv[1], "-D");
-    isDev = (MODE_RESULT == 0);
+  std::string mode = "Kds";
+
+  for (int i=0;i<argc;i++) {
+    try {
+      const char* arg = argv[i];
+      if (strcmp(arg, "-D") == 0) {
+        isDev = true;
+      } else if (strcmp(arg, "-PU") == 0) {
+        mode = "Pickup";
+      }
+    } catch (std::out_of_range _) {
+      break;
+    }
   }
 
   // クラス初期化ゾーン
@@ -84,9 +94,10 @@ int main(int argc, char *argv[]) {
     1, 0,
     "OrderListProvidingModel",
     beforeProviding
-  );
+    );
 
-  engine.loadFromModule("QMLModules", "App");
+  // コマンド引数で指定されたPickupモードか、KDSモードで動く。
+  engine.loadFromModule("QMLModules", QString("%1Main").arg(mode));
 
   // Httpリクエストおくって、WS初期化まで
   kdsService.awaitOrders();
