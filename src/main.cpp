@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
   KdsConfig::load(isDev);
   auto *client = new HttpClient();
   auto *socket = new Websocket();
-  auto *orderListModel = new OrderListModel(&app, client, socket);
+  auto *orderListModel = new OrderListModel(&app, client, socket, mode);
   KdsService kdsService(
     &app,
     client,

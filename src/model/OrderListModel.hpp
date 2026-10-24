@@ -22,7 +22,7 @@ public:
     ITEMS_ROLE
   };
 
-  explicit OrderListModel(QObject *parent = nullptr, const HttpClient *client = nullptr, const Websocket *socket = nullptr);
+  explicit OrderListModel(QObject *parent = nullptr, const HttpClient *client = nullptr, const Websocket *socket = nullptr, const std::string &mode = "");
   ~OrderListModel() override;
 
   // 要素数
@@ -84,8 +84,9 @@ public:
   /**
   * 指定した注文を追加する
   * @param order
+  * @param isPlaySound
   */
-  void append(Order &order);
+  void append(Order &order, bool isPlaySound = true);
 
   /**
   * 指定した注文を更新する
@@ -117,5 +118,5 @@ private:
   // orderIDの配列、data()で使用
   std::vector<QString> m_orderIDs;
 
-  QSoundEffect m_sound;
+  QSoundEffect *m_sound = nullptr;
 };

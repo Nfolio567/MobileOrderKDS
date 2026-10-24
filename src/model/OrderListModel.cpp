@@ -9,12 +9,16 @@
 #include "network/HttpClient.hpp"
 #include "network/Websocket.hpp"
 
-OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const Websocket *socket) :
-  QAbstractListModel(parent),
-  m_sound(this)
+OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const Websocket *socket, const std::string &mode) :
+  QAbstractListModel(parent)
 {
-  m_sound.setSource(QUrl("qrc:/qt/qml/QMLModules/resources/sound.wav"));
-  m_sound.setVolume(1.0);
+
+  if (mode.compare("Kds") == 0) {
+    m_sound = new QSoundEffect(this);
+
+    m_sound->setSource(QUrl("qrc:/qt/qml/QMLModules/resources/sound.wav"));
+    m_sound->setVolume(1.0);
+  }
 
   connect(
     client,
@@ -129,11 +133,11 @@ auto OrderListModel::json2Orders(const QJsonObject &ordersObject) -> std::vector
 void OrderListModel::set(std::vector<Order> &orders) {
   // 追加ループ
   for (int i=0;i<orders.size();i++) {
-    append(orders[i]);
+    append(orders[i], false);
   }
 }
 
-void OrderListModel::append(Order &order) {
+void OrderListModel::append(Order &order, bool isPlaySound) {
   // 今から追加するやつのindex
   const int addingIndex = static_cast<int>(m_orderIDs.size());
 
@@ -147,7 +151,10 @@ void OrderListModel::append(Order &order) {
   m_orders.emplace(order.id, order);
 
   endInsertRows();
-  m_sound.play();
+  if (m_sound != nullptr && isPlaySound) {
+    qDebug() << "play ringtone";
+    m_sound->play();
+  }
 }
 
 int OrderListModel::update(const QString &orderID, Order &order) {
