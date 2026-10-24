@@ -16,6 +16,12 @@ Window {
   visible: true
   flags: Qt.FramelessWindowHint
 
+  Shortcut {
+    sequence: StandardKey.Quit
+    context: Qt.ApplicationShortcut
+    onActivated: Qt.quit()
+  }
+
   ColumnLayout {
     anchors.fill: parent
 
