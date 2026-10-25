@@ -13,6 +13,8 @@ Window {
     visible: true
     flags: Qt.FramelessWindowHint
 
+    title: "providing"
+
     Shortcut {
       sequence: StandardKey.Quit
       context: Qt.ApplicationShortcut

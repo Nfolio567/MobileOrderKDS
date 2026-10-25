@@ -8,7 +8,7 @@
 #include <QGuiApplication>
 #include <QFontDatabase>
 #include <QString>
-#include <QDirIterator>
+#include <QCursor>
 
 #include "model/OrderListCookFilter.hpp"
 #include "model/OrderListProvidingFilter.hpp"
@@ -16,6 +16,10 @@
 int main(int argc, char *argv[]) {
   // Qt初期化
   QGuiApplication app(argc, argv);
+
+
+  // カーソル削除
+  QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
 
 
   // フォントロード
@@ -41,7 +45,7 @@ int main(int argc, char *argv[]) {
       atkinson.first(),
       zenKakuGothicNew.first(),
     });
-    app.setFont(font);
+    QGuiApplication::setFont(font);
   } else {
     qWarning() << "Failed load fonts";
   }

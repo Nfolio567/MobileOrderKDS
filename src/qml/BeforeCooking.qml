@@ -14,6 +14,8 @@ Window {
     visible: true
     flags: Qt.FramelessWindowHint
 
+    title: "cook"
+
     KdsBase {
       id: mainScreen
 
