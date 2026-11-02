@@ -29,6 +29,12 @@ set(KDS_QML_FILES
 set(KDS_QML_ELEMENTS
 )
 
+file(GLOB VOICE_FILES
+  CONFIGURE_DEPENDS
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  resources/voices/*.wav
+)
+
 set(KDS_QML_RESOURCES
   ./fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Regular.ttf
   ./fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Bold.ttf
@@ -36,9 +42,10 @@ set(KDS_QML_RESOURCES
   ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Medium.ttf
   ./fonts/Zen_Kaku_Gothic_New/ZenKakuGothicNew-Bold.ttf
   ./resources/sound.wav
+  ${VOICE_FILES}
 )
 
-qt_standard_project_setup(REQUIRES 6.11.1)
+qt_standard_project_setup(REQUIRES 6.11.3)
 
 qt_add_executable(kds)
 

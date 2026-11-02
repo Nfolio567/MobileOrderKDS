@@ -11,7 +11,6 @@
 
 class KdsService : public QObject {
   Q_OBJECT
-  QML_ELEMENT
 
   public:
     explicit KdsService(QObject *parent = nullptr, HttpClient *client = nullptr, Websocket *socket = nullptr);

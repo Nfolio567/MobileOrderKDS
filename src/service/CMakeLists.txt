@@ -1,6 +1,8 @@
 target_sources(kds PRIVATE
   ./KdsService.cpp
   ./KdsService.hpp
+  ./Voice.cpp
+  ./Voice.hpp
 )
 
 add_subdirectory(./network)

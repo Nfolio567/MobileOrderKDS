@@ -1,5 +1,6 @@
 #pragma once
 #include <qsortfilterproxymodel.h>
+#include <QObject>
 
 #include "OrderListModel.hpp"
 
@@ -8,6 +9,13 @@ class OrderListProvidingFilter : public QSortFilterProxyModel {
 
 public:
   using QSortFilterProxyModel::QSortFilterProxyModel;
+
+  /**
+   * 注文番号を取得
+   * @param idx index
+   * @return orderID
+   */
+  Q_INVOKABLE QString getID(int idx) const;
 
 protected:
   auto filterAcceptsRow(int source_row, const QModelIndex &source_parent) const -> bool override {

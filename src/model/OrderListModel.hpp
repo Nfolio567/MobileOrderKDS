@@ -55,7 +55,7 @@ public:
           items.append(QVariantMap{
             { "product", item.product },
             { "options", item.options },
-            { "quantity", item.quantity }
+            { "quantity", item.quantity },
           });
         }
         return items;

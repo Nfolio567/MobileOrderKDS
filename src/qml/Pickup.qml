@@ -22,6 +22,16 @@ Window {
     onActivated: Qt.quit()
   }
 
+  Connections {
+    target: OrderListProvidingModel
+    function onRowsInserted(parent, first, last) {
+      for (let i=first;i<=last;i++) {
+        console.log("unko");
+        MyVoice.playOrderVoice(OrderListProvidingModel.getID(i));
+      }
+    }
+  }
+
   ColumnLayout {
     anchors.fill: parent
 
@@ -140,26 +150,35 @@ Window {
             text: orderID
             font.pixelSize: 70
 
-            // 緑と黒で点滅させる
-            Timer {
-              interval: 500
-
-              running: true
-              repeat: true
-              onTriggered: {
-                if (pickupRoot.pickupReadyColor === "deeppink") {
-                  pickupRoot.pickupReadyColor = "black";
-                } else if (pickupRoot.pickupReadyColor === "black") {
-                  pickupRoot.pickupReadyColor = "deeppink";
-                }
-
-                parent.color = pickupRoot.pickupReadyColor;
-              }
-            }
+            color: pickupRoot.pickupReadyColor
           }
         }
       }
     }
   }
 
+  Text {
+    x: parent.width - 280
+    y: parent.height - 30
+    width: 280
+    height: 30
+
+    text: "VOICEVOX もち子さん(cv明日葉よもぎ)"
+    font.pixelSize: 15
+  }
+
+  // ピンクと黒で点滅させる
+  Timer {
+    interval: 500
+
+    running: true
+    repeat: true
+    onTriggered: {
+      if (pickupRoot.pickupReadyColor === "deeppink") {
+        pickupRoot.pickupReadyColor = "black";
+      } else if (pickupRoot.pickupReadyColor === "black") {
+        pickupRoot.pickupReadyColor = "deeppink";
+      }
+    }
+  }
 }

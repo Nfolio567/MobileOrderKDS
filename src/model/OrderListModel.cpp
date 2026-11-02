@@ -138,6 +138,7 @@ void OrderListModel::set(std::vector<Order> &orders) {
 }
 
 void OrderListModel::append(Order &order, bool isPlaySound) {
+  qDebug() << QString("append: %1").arg(order.id);
   // 今から追加するやつのindex
   const int addingIndex = static_cast<int>(m_orderIDs.size());
 
@@ -167,8 +168,10 @@ int OrderListModel::update(const QString &orderID, Order &order) {
       index(changedIndex),
       index(changedIndex)
     );
+    qDebug() << QString("update: %1").arg(orderID);
     return 0;
   } catch (std::out_of_range e) {
+    qDebug() << QString("update failed: %1").arg(orderID);
     return 1;
   }
 }

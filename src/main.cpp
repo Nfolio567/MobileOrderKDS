@@ -9,7 +9,9 @@
 #include <QFontDatabase>
 #include <QString>
 #include <QCursor>
+#include <QDirIterator>
 
+#include "Voice.hpp"
 #include "model/OrderListCookFilter.hpp"
 #include "model/OrderListProvidingFilter.hpp"
 
@@ -18,8 +20,19 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
 
+  // リソース一覧
+  QDirIterator it(":/", QDirIterator::Subdirectories);
+  while (it.hasNext()) {
+    qDebug() << it.next();
+  }
+
+
   // カーソル削除
   QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+
+
+  // ボイスロード
+  auto *voice = new MyVoice(&app);
 
 
   // フォントロード
@@ -99,6 +112,12 @@ int main(int argc, char *argv[]) {
     "OrderListProvidingModel",
     beforeProviding
     );
+  qmlRegisterSingletonInstance<MyVoice>(
+    "Kds",
+    1, 0,
+    "MyVoice",
+    voice
+  );
 
   // コマンド引数で指定されたPickupモードか、KDSモードで動く。
   engine.loadFromModule("QMLModules", QString("%1Main").arg(mode));
