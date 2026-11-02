@@ -25,7 +25,7 @@ struct Order {
   bool isCooked;
   bool isProvided;
   QList<Item> items;
-  int index = 0;
+  int index;
 
   Order(
     const QString &id,

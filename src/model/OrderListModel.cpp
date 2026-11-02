@@ -13,7 +13,7 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
   QAbstractListModel(parent)
 {
 
-  if (mode.compare("Kds") == 0) {
+  if (mode == "Kds") {
     m_sound = new QSoundEffect(this);
 
     m_sound->setSource(QUrl("qrc:/qt/qml/QMLModules/resources/sound.wav"));
@@ -28,7 +28,7 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
       qDebug() << "Http";
       qDebug() << json;
       std::vector<Order> orders = json2Orders(json.object());
-      for (const Order order : orders) {
+      for (const Order& order : orders) {
         qDebug() << order.id;
       }
 
@@ -66,7 +66,7 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
     client,
     &HttpClient::error,
     this,
-    [this](const QString &message) -> void {
+    [](const QString &message) -> void {
         qWarning() << QString("HttpClient error: %1")
           .arg(message);
     }
@@ -76,7 +76,7 @@ OrderListModel::OrderListModel(QObject *parent, const HttpClient *client, const 
     socket,
     &Websocket::error,
     this,
-    [this](const QString &message) -> void {
+    [](const QString &message) -> void {
       qWarning() << QString("WebSocket error: %1")
         .arg(message);
     }
@@ -162,13 +162,15 @@ int OrderListModel::update(const QString &orderID, Order &order) {
   try {
     // updateするやつのindex
     const int changedIndex = m_orders.at(orderID).index;
+    order.index = changedIndex;
+
     // update
     m_orders.at(orderID) = std::move(order);
     emit dataChanged(
       index(changedIndex),
       index(changedIndex)
     );
-    qDebug() << QString("update: %1").arg(orderID);
+    qDebug() << QString("update: %1, index: %2").arg(orderID).arg(changedIndex);
     return 0;
   } catch (std::out_of_range e) {
     qDebug() << QString("update failed: %1").arg(orderID);
