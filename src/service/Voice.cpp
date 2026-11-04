@@ -116,7 +116,20 @@ void MyVoice::playOrderVoice(const QString &message) {
 
   // そもそも今何も流れてないのならば、再生しちゃう
   if (m_current == nullptr) {
-    playNext();
+    if (m_queue.front()->status() == QSoundEffect::Ready) {
+      playNext();
+    } else {
+      connect(
+        m_queue.front(),
+        &QSoundEffect::statusChanged,
+        this,
+        [this]() -> void {
+          if (m_queue.front()->status() == QSoundEffect::Ready) {
+            playNext();
+          }
+        }
+      );
+    }
   }
 }
 
@@ -129,6 +142,7 @@ void MyVoice::playNext() {
   // キューの最初取得
   m_current = m_queue.front();
   // 再生
+  qDebug() << m_current->status();
   m_current->play();
   qDebug() << "play";
   // キューから削除
