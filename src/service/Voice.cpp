@@ -130,6 +130,7 @@ void MyVoice::playNext() {
   m_current = m_queue.front();
   // 再生
   m_current->play();
+  qDebug() << "play";
   // キューから削除
   m_queue.pop();
 }
