@@ -15,6 +15,8 @@
 #include "model/OrderListCookFilter.hpp"
 #include "model/OrderListProvidingFilter.hpp"
 
+#define VERSION "1.0.0"
+
 int main(int argc, char *argv[]) {
   // Qt初期化
   QGuiApplication app(argc, argv);
@@ -29,10 +31,6 @@ int main(int argc, char *argv[]) {
 
   // カーソル削除
   QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
-
-
-  // ボイスロード
-  auto *voice = new MyVoice(&app);
 
 
   // フォントロード
@@ -75,11 +73,15 @@ int main(int argc, char *argv[]) {
         isDev = true;
       } else if (strcmp(arg, "-PU") == 0) {
         mode = "Pickup";
+      } else if (strcmp(arg, "--version") == 0) {
+        printf("Version: %s", VERSION);
+        return 0;
       }
     } catch (std::out_of_range _) {
       break;
     }
   }
+
 
   // クラス初期化ゾーン
   KdsConfig::load(isDev);
@@ -91,6 +93,9 @@ int main(int argc, char *argv[]) {
     client,
     socket
   );
+
+  // ボイスロード
+  auto *voice = new MyVoice(&app);
 
   auto *beforeCooking = new OrderListCookFilter(&app);
   auto *beforeProviding = new OrderListProvidingFilter(&app);
