@@ -116,6 +116,7 @@ void MyVoice::playOrderVoice(const QString &message) {
 
   // そもそも今何も流れてないのならば、再生しちゃう
   if (m_current == nullptr) {
+    qDebug() << m_queue.front()->status();
     if (m_queue.front()->status() == QSoundEffect::Ready) {
       playNext();
     } else {
