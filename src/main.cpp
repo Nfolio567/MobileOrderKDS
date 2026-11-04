@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
       } else if (strcmp(arg, "-PU") == 0) {
         mode = "Pickup";
       } else if (strcmp(arg, "--version") == 0) {
-        printf("Version: %s", VERSION);
+        printf("Version: %s\n", VERSION);
         return 0;
       }
     } catch (std::out_of_range _) {
