@@ -18,6 +18,27 @@
 #define VERSION "1.0.0"
 
 int main(int argc, char *argv[]) {
+  // 開発モードか否か・KDSかPickupかどうか
+  bool isDev = false;
+  std::string mode = "Kds";
+
+  for (int i=0;i<argc;i++) {
+    try {
+      const char* arg = argv[i];
+      if (strcmp(arg, "-D") == 0) {
+        isDev = true;
+      } else if (strcmp(arg, "-PU") == 0) {
+        mode = "Pickup";
+      } else if (strcmp(arg, "--version") == 0) {
+        printf("Version: %s", VERSION);
+        return 0;
+      }
+    } catch (std::out_of_range _) {
+      break;
+    }
+  }
+
+
   // Qt初期化
   QGuiApplication app(argc, argv);
 
@@ -61,26 +82,6 @@ int main(int argc, char *argv[]) {
     qWarning() << "Failed load fonts";
   }
 
-
-  // 開発モードか否か・KDSかPickupかどうか
-  bool isDev = false;
-  std::string mode = "Kds";
-
-  for (int i=0;i<argc;i++) {
-    try {
-      const char* arg = argv[i];
-      if (strcmp(arg, "-D") == 0) {
-        isDev = true;
-      } else if (strcmp(arg, "-PU") == 0) {
-        mode = "Pickup";
-      } else if (strcmp(arg, "--version") == 0) {
-        printf("Version: %s", VERSION);
-        return 0;
-      }
-    } catch (std::out_of_range _) {
-      break;
-    }
-  }
 
 
   // クラス初期化ゾーン
