@@ -15,7 +15,7 @@
 #include "model/OrderListCookFilter.hpp"
 #include "model/OrderListProvidingFilter.hpp"
 
-#define VERSION "1.0.2"
+#define VERSION "1.0.3"
 
 int main(int argc, char *argv[]) {
   // 開発モードか否か・KDSかPickupかどうか
