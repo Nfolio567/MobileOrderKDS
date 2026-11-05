@@ -23,7 +23,7 @@ private:
 
   std::vector<QSoundEffect*> m_sounds;
   std::queue<QSoundEffect*> m_queue;
-  QSoundEffect* m_current;
+  QSoundEffect* m_current = nullptr;
   QUrl m_voiceRoot = QUrl("qrc:/qt/qml/QMLModules/resources/voices/");
   const int ALPHABET_CONVERT_NUM = 53;
   const int NUMBER_CONVERT_NUM = 3;
