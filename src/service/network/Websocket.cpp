@@ -15,7 +15,7 @@ Websocket::Websocket(QObject *parent) :
     &QWebSocket::connected,
     this,
     [this]() -> void {
-      emit Websocket::connected();
+      emit connected();
     }
   );
 
@@ -30,7 +30,7 @@ Websocket::Websocket(QObject *parent) :
         emit error("Failed convert from websocket text to json");
       }
 
-      emit Websocket::textMessage(json);
+      emit textMessage(json);
     }
   );
 
@@ -39,7 +39,8 @@ Websocket::Websocket(QObject *parent) :
     &QWebSocket::disconnected,
     this,
     [this]() -> void {
-      emit Websocket::disconnected();
+      qDebug() << "WebSocket Disconnected";
+      emit disconnected();
     }
   );
 }

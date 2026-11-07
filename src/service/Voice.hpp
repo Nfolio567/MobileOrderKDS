@@ -28,5 +28,5 @@ private:
   const int ALPHABET_CONVERT_NUM = 53;
   const int NUMBER_CONVERT_NUM = 3;
 
-  const int SOUND_QUANTITY = 36;
+  const int SOUND_QUANTITY = 38;
 };

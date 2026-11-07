@@ -83,7 +83,6 @@ int main(int argc, char *argv[]) {
   }
 
 
-
   // クラス初期化ゾーン
   KdsConfig::load(isDev);
   auto *client = new HttpClient();
@@ -95,6 +94,7 @@ int main(int argc, char *argv[]) {
     socket
   );
 
+
   // ボイスロード
   auto *voice = new MyVoice(&app);
 
@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
 
   beforeCooking->setSourceModel(orderListModel);
   beforeProviding->setSourceModel(orderListModel);
+
 
   // QMLエンジン初期化ゾーン
   QQmlApplicationEngine engine;
